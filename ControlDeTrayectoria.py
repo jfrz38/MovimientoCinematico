@@ -16,7 +16,6 @@ tiempo = 0.0
 Tiempo = []
 for x in reversed(range(xFinal,xInicial,1)):
 
-    # https://roboted.wordpress.com/fundamentals/
     cosq2 = (x**2+y**2-L1**2-L2**2) / (2*L1*L2)
     numerator = (x**2+y**2+L1**2-L2**2)
     denominator = 2*L1*math.sqrt((x**2+y**2))
