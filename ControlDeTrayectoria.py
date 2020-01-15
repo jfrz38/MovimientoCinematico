@@ -1,41 +1,39 @@
 # encoding: utf-8
 import numpy
 import math
+import matplotlib.pyplot as plt
 
 L1 = 100.0
 L2 = 50.0
 
-def cosq2(x,y):
-    return (pow(x,2) + pow(y,2) - pow(L1,2) - pow(L2,2))/(2*L1*L2)
-def addResult(q1,q2,x,y):
-    return [q1,q2,x,y]
-###
-#Posiciones iniciales
-x = 100
-yInicial = 100
+y = 100.0
+xInicial = 101
 
-yFinal = 50 #Posición en Y donde llega el brazo
-step = 10   #Cada cuánta distancia hay un punto de muestreo
-resultado = []
-for y in reversed(range(yFinal,yInicial,10)):
-    print("y = "+str(y))
-    aux = []
-    q1 = numpy.arctan(x/y)
-    cosQ2 = ((pow(x,2) + pow(y,2) - pow(L1,2) - pow(L2,2))/(2*L1*L2))#cosq2(x,y)
-    if(cosQ2 == 0):
-        #error ; añadir a errores
-        q2 = float('Inf')
-    else:
-        q2 = numpy.arctan(math.sqrt(1-pow(cosQ2,2)))/(cosQ2)
-    
-    aux.append(q1)
-    aux.append(q2)
-    aux.append(x)
-    aux.append(y)
-    resultado.append(aux)
+xFinal = 50 # Posición en X donde llega el brazo
+Q1 = []
+Q2 = []
+tiempo = 0.0
+Tiempo = []
+for x in reversed(range(xFinal,xInicial,1)):
 
-print("q1\tq2\tx y")
-for res in resultado:
-    print(str(res))
+    # https://roboted.wordpress.com/fundamentals/
+    cosq2 = (x**2+y**2-L1**2-L2**2) / (2*L1*L2)
+    numerator = (x**2+y**2+L1**2-L2**2)
+    denominator = 2*L1*math.sqrt((x**2+y**2))
+    q1 = math.atan(y/x) - math.acos(numerator/denominator)
+    q2 = math.atan2(math.sqrt(1-math.pow(cosq2,2)), cosq2)
+    Q1.append(q1)
+    Q2.append(q2)
+    Tiempo.append(tiempo)
+    tiempo+=2.0/50.0
 
+plt.figure()
+plt.plot(Tiempo, Q1)
+plt.ylabel('Q1')
+plt.xlabel('Tiempo (s)')
+plt.figure()
+plt.plot(Tiempo, Q2)
+plt.ylabel('Q2')
+plt.xlabel('Tiempo (s)')
+plt.show()
 
